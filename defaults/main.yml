@@ -1,0 +1,3 @@
+---
+deployment: "xronos"
+influxdb_path: "/opt/{{ deployment }}/influxdb"

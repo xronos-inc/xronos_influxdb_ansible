@@ -1,0 +1,10 @@
+galaxy_info:
+  role_name: xronos-dashboard-backend-ansible
+  company: Xronos, Inc.
+  description: "Provision a Xronos dashboard logging (InfluxDB) and visualization (Grafana) services on a host."
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+collections:
+  - community.docker

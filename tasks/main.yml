@@ -1,0 +1,54 @@
+# code: language=ansible
+---
+- name: Apt update cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600 # 1 hr
+  become: true
+  
+- name: "Create application directory {{ influxdb_path }}"
+  ansible.builtin.file:
+    path: "{{ influxdb_path }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0755
+  become: true
+
+# - name: "Deploy influxdb default configuration"
+#   ansible.builtin.copy:
+#     src: "influx-telegraf-grafana/influxdb"
+#     dest: "{{ dashboard_path }}"
+#     force: false
+
+- name: "Deploy influxdb environment"
+  ansible.builtin.template:
+    src:  "influxdb.env"
+    dest: "{{ influxdb_path }}/influxdb.env"
+
+- name: "Create influxdb persistent configuration directory"
+  ansible.builtin.file:
+    path: "{{ influxdb_path }}/config"
+    state: directory
+
+- name: "Docker volume create 'influxdb-data'"
+  community.docker.docker_volume:
+    name: "{{ deployment }}-influxdb-data"
+
+- name: "Start docker container"
+  community.docker.docker_container:
+    name: influxdb
+    image: influxdb:latest
+    hostname: influxdb
+    restart_policy: unless-stopped
+    ports:
+      - "8086:8086/tcp"
+    env_file: "{{ influxdb_path }}/influxdb.env"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - "{{ influxdb_path }}/config:/etc/influxdb2"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
