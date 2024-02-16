@@ -39,7 +39,7 @@ After running, the following services should be running:
 
 ## Variables
 
-- `deployment` (= `xronos` ): The name of the deployment.
+- `deployment` (= `xronos` ): The name of this deployment. Used to prefix filesystem and docker resources so that more than once instance of this service may coexist on the same host.
 - `influxdb_path` (= `/opt/{{ deployment }}/influxdb` ): The path to store InfluxDB configuration.
 - `influxdb_admin_password`: The password for the admin user when using the web interface.
 - `influxdb_admin_token`: API token for the admin user.

@@ -1,7 +1,9 @@
 galaxy_info:
-  role_name: xronos-dashboard-backend-ansible
-  company: Xronos, Inc.
-  description: "Provision a Xronos dashboard logging (InfluxDB) and visualization (Grafana) services on a host."
+  role_name: xronos_influxdb_ansible
+  author: Xronos, Inc.
+  min_ansible_version: "2.15"
+  description: "Provision host with InfluxDB for use with Xronos applications."
+  license: proprietary
   platforms:
     - name: Ubuntu
       versions:

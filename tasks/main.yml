@@ -15,12 +15,6 @@
     mode: 0755
   become: true
 
-# - name: "Deploy influxdb default configuration"
-#   ansible.builtin.copy:
-#     src: "influx-telegraf-grafana/influxdb"
-#     dest: "{{ dashboard_path }}"
-#     force: false
-
 - name: "Deploy influxdb environment"
   ansible.builtin.template:
     src:  "influxdb.env"
@@ -31,21 +25,21 @@
     path: "{{ influxdb_path }}/config"
     state: directory
 
-- name: "Docker volume create 'influxdb-data'"
+- name: "Docker volume create {{ depoyment }}-influxdb-data'"
   community.docker.docker_volume:
     name: "{{ deployment }}-influxdb-data"
 
-- name: "Start docker container"
+- name: "Start docker container {{ deployment }}-influxdb"
   community.docker.docker_container:
-    name: influxdb
+    name: "{{ deployment }}-influxdb"
     image: influxdb:latest
-    hostname: influxdb
+    hostname: "{{ deployment }}-influxdb"
     restart_policy: unless-stopped
     ports:
       - "8086:8086/tcp"
     env_file: "{{ influxdb_path }}/influxdb.env"
     volumes:
-      - influxdb-data:/var/lib/influxdb2
+      - "{{ deployment }}-influxdb-data:/var/lib/influxdb2"
       - "{{ influxdb_path }}/config:/etc/influxdb2"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8086/ping"]
