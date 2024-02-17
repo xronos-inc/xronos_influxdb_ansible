@@ -25,7 +25,7 @@
     path: "{{ influxdb_path }}/config"
     state: directory
 
-- name: "Docker volume create {{ depoyment }}-influxdb-data'"
+- name: "Docker volume create {{ deployment }}-influxdb-data'"
   community.docker.docker_volume:
     name: "{{ deployment }}-influxdb-data"
 
