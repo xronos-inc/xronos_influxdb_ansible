@@ -25,15 +25,22 @@
     path: "{{ influxdb_path }}/config"
     state: directory
 
-- name: "Docker volume create {{ deployment }}-influxdb-data'"
+- name: "Docker volume create '{{ deployment }}-influxdb-data'"
   community.docker.docker_volume:
     name: "{{ deployment }}-influxdb-data"
+
+- name: Docker network create '{{ influxdb_docker_network }}'
+  community.docker.docker_network:
+    name: "{{ influxdb_docker_network }}"
+  when: influxdb_docker_network != 'host'
 
 - name: "Start docker container {{ deployment }}-influxdb"
   community.docker.docker_container:
     name: "{{ deployment }}-influxdb"
     image: influxdb:latest
     hostname: "{{ deployment }}-influxdb"
+    networks:
+      - name: "{{ influxdb_docker_network }}"
     restart_policy: unless-stopped
     ports:
       - "8086:8086/tcp"
