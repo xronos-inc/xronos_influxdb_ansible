@@ -11,18 +11,21 @@
     path: "{{ influxdb_path }}"
     state: directory
     mode: 0755
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
   become: true
 
 - name: "Deploy influxdb environment"
   ansible.builtin.template:
     src:  "influxdb.env"
     dest: "{{ influxdb_path }}/influxdb.env"
-  become: true
 
 - name: "Create influxdb persistent configuration directory"
   ansible.builtin.file:
     path: "{{ influxdb_path }}/config"
     state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
   become: true
 
 - name: "Docker volume create '{{ deployment }}-influxdb-data'"
