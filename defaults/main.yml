@@ -1,6 +1,8 @@
-# SPDX-FileCopyrightText: © 2024 Xronos Inc.
+# SPDX-FileCopyrightText: (c) 2024 Xronos Inc.
 # SPDX-License-Identifier: BSD-3-Clause
 ---
 deployment: "xronos"
 influxdb_path: "/opt/{{ deployment }}/influxdb"
 influxdb_docker_network: "{{ deployment }}"
+
+influxdb_version: latest

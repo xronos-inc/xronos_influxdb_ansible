@@ -15,7 +15,7 @@ Provisioning host:
 
 Remote host:
 
-- Ubuntu 22.04 or later
+- Ubuntu 22.04 or 24.04
 - docker
 
 ## Example playbook
@@ -39,8 +39,9 @@ After running, the following services should be running:
 
 ## Variables
 
-- `deployment` (= `xronos` ): The name of this deployment. Used to prefix filesystem and docker resources so that more than once instance of this service may coexist on the same host.
-- `influxdb_path` (= `/opt/{{ deployment }}/influxdb` ): The path to store InfluxDB configuration.
-- `influxdb_docker_network` (= `{{ deployment }}`): The docker network for the InfuxDB instance.
+- `influxdb_version`: The version tag of the influxdb image to use. Defaults to latest.
+- `deployment`: The name of this deployment. Used to prefix filesystem and docker resources so that more than once instance of this service may coexist on the same host. Defaults to `xronos`.
+- `influxdb_path`: The path to store InfluxDB configuration. Defaults to `/opt/{{ deployment }}/influxdb`.
+- `influxdb_docker_network`: The docker network for the InfuxDB instance. Defaults to `{{ deployment }}`.
 - `influxdb_admin_password`: The password for the admin user when using the web interface.
 - `influxdb_admin_token`: API token for the admin user.
